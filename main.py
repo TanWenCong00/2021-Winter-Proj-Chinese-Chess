@@ -3,8 +3,14 @@ from GUI import *
 
 
 def main():
+    def update_screen():
+        new_screen = gui_board(cbd)
+        draw_piece(new_screen, cbd.board_state)
+        p.display.update()
+
     cbd = ChessBoard("test")
     cbd.start_game()
+    update_screen()
 
     sq_selected = ()  # no square selected, keep track of last click of user (tuple: (row, col))
     player_clicks = []  # keep track of player clicks (two tuples: [(0, 0), (0, 1)]
@@ -18,8 +24,7 @@ def main():
                 p.quit()
                 quit()
             elif e.type == p.MOUSEBUTTONDOWN:  # player input
-                draw_piece(screen, cbd.board_state)
-                p.display.update()
+                update_screen()
 
                 if len(player_clicks) == 0:
                     sq_selected = get_sq_selected()
@@ -36,10 +41,7 @@ def main():
 
                         piece_moved = move_piece(player_clicks[0], player_clicks[1], cbd)
 
-                        # may be able to merge these 3 into one function
-                        screen = gui_board(cbd)
-                        draw_piece(screen, cbd.board_state)
-                        p.display.update()
+                        update_screen()
 
                         sq_selected = ()
                         player_clicks = []
